@@ -19,13 +19,20 @@ all sub-trees in that Binary Tree.
 
 ## Complete Binary Tree: 
 
-## Definition: 
+### Definition: 
 
 - Complete binary tree is a binary tree in which all levels are completely filled except possibly the lowest one, which is filled from the left. 
 - A complete binary tree is similar to a full binary tree except that: 
 
 1. All the leaf element must lean toward the left
 2. The last leaf element might not have a right sibling, or a complete binary tree doesn't have to be a full binary tree. 
+
+
+## Heap-Queue implementation: 
+
+### Definition: 
+
+- Python has a built in heapq library for min-heap which store the number of minimum element at the top of the heap.  
 
 
 
