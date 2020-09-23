@@ -30,6 +30,7 @@ def topKFrequent(nums, k):
 
     if k == len(nums):
         return nums
+            
     #set up a hashmap using Counter to count how many times an element is repeated in the array
     #Structure: keys (the value itself): value (how many times the value is repeated)
     wordCounter = Counter(nums)
