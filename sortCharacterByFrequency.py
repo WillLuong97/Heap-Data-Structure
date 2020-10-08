@@ -66,6 +66,10 @@ def frequencySort(s):
 
     return result
 
+#Function to answer the question using a HEAP.
+def frequencySort_HEAP(s):
+    pass
+
 
 
 #main function to run program
