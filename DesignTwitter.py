@@ -1,5 +1,4 @@
 #Problem 355. Design Twitter
-
 '''
 Design a simplified version of Twitter where users can post tweets, follow/unfollow another user and is able to see the 10 most recent tweets in the user's news feed. Your design should support the following methods:
 
@@ -51,7 +50,8 @@ class Twitter(object):
 		#Hash map to store the user/user_tweets and followers/followeeID:
 		self.userWithTweets = {}
 		self.followersWithFollowee = {}
-
+		#a variable to keep track of the time the tweet is created
+		self.assign_priority = 0
 	#Function to post tweet: 
 	'''
 		Compose a new tweet.
@@ -60,19 +60,20 @@ class Twitter(object):
 		:rtype: None
 	'''
 	def postTweet(self, userId, tweetId):
+		self.assign_priority += 1
 		#Adding the userID and the tweetID into the dictionary
 		#if the user has created a tweet before then we will just keep appending new tweets into the dictionary
 		if userId in self.userWithTweets:
-			self.userWithTweets[userId].add(tweetId)
+			self.userWithTweets[userId].add((tweetId, self.assign_priority))
 		else: 
-			self.userWithTweets[userId] = set([tweetId])
+			self.userWithTweets[userId] = set([(tweetId, self.assign_priority)])
 		return self.userWithTweets
 	#Function to get news feed: 
 	'''
 		Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to least recent.
 		:type userId: int
 		:rtype: List[int]
-	'''		
+	'''	
 	def getNewsFeed(self, userId):
 		#array to store the value of all followees that the user follows
 		arrayOfUserIds = [userId]
@@ -81,17 +82,21 @@ class Twitter(object):
 			for followee in self.followersWithFollowee[userId]:
 				arrayOfUserIds.append(followee)
 		#helper method to get all tweets belong those user ids
-		def getUserIds(array):
+		def getTweetIds(array):
 			retArr = []
 			for user in array:
 				if user in self.userWithTweets:
 					for tweet in self.userWithTweets[user]:
 						retArr.append(tweet)
 			return retArr
-		result = getUserIds(arrayOfUserIds)
-		while len(result) > 10:
-			result.pop()
-		return sorted(result)
+		tweets = getTweetIds(arrayOfUserIds)
+		while len(tweets) > 10:
+			tweets.pop()
+
+		tweets = sorted(tweets, key=lambda posts: posts[1], reverse=True)
+		for tweet in tweets:
+			result.append(tweet[0])
+		return result
 
 	#Function to follow a user: 
 	'''
@@ -108,8 +113,6 @@ class Twitter(object):
 		else: 
 			self.followersWithFollowee[followerId] = set([followeeId])
 		return self.followersWithFollowee
-
-	
 	#Function to unfollow a user:
 	"""
 	Follower unfollows a followee. If the operation is invalid, it should be a no-op.
