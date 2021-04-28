@@ -32,7 +32,9 @@ salary out of the rest and pay that money and then scale down for the other work
  
 Approach: 
 
-Since every worker must be paid by their expected dollar-quality ratio, we will create max_heap or min_heap with negative values. We store them into a heap, and we will iterate through each worker ratio
+As in Approach 1, the space of worker selections (and their associated cost) is partitioned according to the worker that will get paid their minimum wage. Denote this worker's wage and quality by W, Q and ratio R := W/Q. The price for worker i will then be q[i]*R which is >= w[i] if and only if ratio[i] <= R. 
+Thus, with a given worker's wage fixed to his min wage, only those workers with smaller ratio can be included in the group (otherwise the chosen worker would need to get paid above his min wage), and therefore, 
+keeping track of the lowest quality workers with ratio <= R while increasing R will find the min cost selection.
 '''
 import heapq
 def mincostToHireWorkers(quality, wage, k):
@@ -57,6 +59,10 @@ def mincostToHireWorkers(quality, wage, k):
 			result = min(result, sumQuality * ratio)
 	return float(result)
 
+'''
+Time complexity: O(nlogn), where N is the number of workers 
+Space complextiy: O(n), n is the size of the heap that we have to allocate space for
+'''
 
 
 #Main function to run the test cases: 
